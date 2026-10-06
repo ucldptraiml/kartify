@@ -1,29 +1,3 @@
-import os, sqlite3
-from pathlib import Path
-import streamlit as st
-# ... any other imports ...
-
-# 1. set_page_config FIRST — must be the first Streamlit call
-st.set_page_config(
-    page_title="Kartify Support",
-    page_icon="🛒",
-    layout="centered",
-)
-
-# 2. NOW the diagnostic can run
-st.write("Working directory:", os.getcwd())
-st.write("Files here:", os.listdir("."))
-st.write("Does kartify.db exist at relative path?", os.path.exists("kartify.db"))
-
-with sqlite3.connect("kartify.db") as conn:
-    tables = conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()
-    st.write("Tables found:", tables)
-    if any(t[0] == "orders" for t in tables):
-        count = conn.execute("SELECT COUNT(*) FROM orders").fetchone()[0]
-        st.write("Row count in orders:", count)
-
-# 3. Then the rest of your app (secrets, graph setup, UI, etc.)
-
 import streamlit as st
 import sqlite3
 import pandas as pd
